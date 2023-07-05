@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+
+    <link rel="shortcut icon" href="IMG\favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="CSS\style.css">
+    <link rel="stylesheet" href="CSS\modal.css">
+</head>
+
+<body>
+
+
+    <section id="modal">
+
+        <div id="modal_content">
+            <div id="modal_heading">
+                <p>Are you sure to delete?</p>
+                <p id="task_on_modal">Task: <span id="task_name_on_modal" ></span></p>
+            </div>
+            <div id="modal_btns">
+                <button class="modal_btn"><span>Yes</span></button>
+                <button class="modal_btn"><span>No</span></button>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="outer_box">
+
+        <div class="heading">To-<span>Do</span>&nbsp;List</div>
+        <div class="task_input">
+            <input type="text" placeholder="Enter Your Task" id="inpt_task_area" maxlength="100">
+            <button id="task_add_btn" onclick="task_add()">Add Task</button>
+
+
+        </div>
+        <div id="nav">
+            <button class="nav_btn" id="star_task" onclick="star_task()"><i class="fas fa-star"></i></button>
+            <button class="nav_btn" id="pending_task" onclick="pending_task()">Pending Task</button>
+            <button class="nav_btn" id="completed_task" onclick="completed_task()">Completed Task</button>
+        </div>
+        <div id="todo_outer">
+
+            <div class="todos">
+                <!-- <div class="todo"> -->
+                <!-- <div class="todo_heading">Title</div> -->
+
+                <!-- <div class="done_symbol"><span>&check;</span></div> -->
+                <!-- <p>this is todo</p> -->
+
+                <!-- <button class="todo_done_btn"></button> -->
+                <!-- <button class="todo_delete_btn">&#10006;</button> -->
+                <!-- </div> -->
+
+            </div>
+        </div>
+        <a href="https://iamsoumojit.vercel.app" target="_blank">
+            <div id="copy_right">
+                <p>Designed by <span>Soumojit Shome</span> &copy;2023</p>
+            </div>
+        </a>
+
+    </section>
+
+
+
+
+
+</body>
+
+<script src="JS\main.js"></script>
+
+</html>
