@@ -1,8 +1,4 @@
 
-var elem = document.documentElement;
-elem.requestFullscreen();
-
-
 
 load();
 document.getElementById("modal").style.display = "none";
