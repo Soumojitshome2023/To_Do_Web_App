@@ -1,5 +1,4 @@
 
-
 load();
 document.getElementById("modal").style.display = "none";
 

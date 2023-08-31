@@ -1,0 +1,312 @@
+&#10006;
+
+
+
+
+
+load();
+document.getElementById("modal").style.display = "none";
+
+// ===================================Submit Button Hide===================================
+document.getElementById("inpt_task_area").addEventListener("input", () => {
+
+    if (document.getElementById("inpt_task_area").value.trim() == "") {
+        document.getElementById("task_add_btn").style.display = "none";
+
+    }
+    else {
+        document.getElementById("task_add_btn").style.display = "inline-block";
+    }
+})
+// ========================================================================================
+
+
+
+
+// ========================================Task Add========================================
+function task_add() {
+
+    let task = document.getElementById("inpt_task_area").value;
+
+    if (localStorage.getItem("todos") == null) {
+
+        let obj = [];
+
+        obj.push([task, 0]);
+        localStorage.setItem("todos", JSON.stringify(obj));
+    }
+    else {
+        let obj = JSON.parse(localStorage.getItem("todos"));
+
+
+        obj.push([task, 0]);
+        localStorage.setItem("todos", JSON.stringify(obj));
+
+    }
+
+    document.getElementById("inpt_task_area").value = "";
+
+    load();
+
+}
+// ======================================================================================== 
+
+
+
+
+
+// ========================================Task Load=======================================
+function load() {
+    document.getElementById("task_add_btn").style.display = "none";
+    document.getElementById("pending_task").style.boxShadow = "0 0 7px 4px yellow";
+    document.getElementById("completed_task").style.boxShadow = "";
+
+    let todos = document.getElementsByClassName("todos")[0];
+    todos.innerHTML = "";
+
+
+    if (localStorage.getItem("todos") != null) {
+
+        let obj = JSON.parse(localStorage.getItem("todos"));
+
+        obj.forEach((ele, ind) => {
+
+            let b = `
+                <div class="todo">
+                
+                <div class="done_symbol" onclick="task_done(${ind})"><span>&check;</span></div>
+                <p>${obj[ind][0]}</p>
+
+                <button class="todo_edit_btn" onclick="todo_edit_btn(${ind})"><i class='fas fa-edit'></i></button>
+                
+                <button class="todo_delete_btn" onclick="delete_btn(${ind})"><i class='fas fa-trash-alt'></i></button>
+
+                </div>
+
+                `
+
+            todos.innerHTML += b;
+
+            if (obj[ind][1] == '1') {
+
+                document.querySelectorAll(".done_symbol span")[ind].style.display = "block"
+                document.querySelectorAll(".todo p")[ind].style.textDecoration = "line-through";
+                document.querySelectorAll(".todo")[ind].style.display = "none";
+                document.querySelectorAll(".todo")[ind].style.backgroundColor = "#41753b";
+            }
+
+
+        });
+
+
+    }
+
+
+}
+// ========================================================================================
+
+
+
+
+// ====================================Task Done/Toggle====================================
+function task_done(ind) {
+
+    let obj = JSON.parse(localStorage.getItem("todos"));
+    let temp = obj[ind][1];
+
+
+    if (document.querySelectorAll(".done_symbol span")[ind].style.display == "") {
+
+        obj[ind][1] = 1
+
+        localStorage.setItem("todos", JSON.stringify(obj));
+
+    }
+    else {
+
+        obj[ind][1] = 0;
+
+        localStorage.setItem("todos", JSON.stringify(obj));
+
+    }
+    load();
+
+    if (temp == '1') {
+
+        completed_task();
+
+    }
+}
+// ========================================================================================
+
+
+
+
+
+// =======================================Task Delete======================================
+function delete_btn(ind) {
+
+    let obj = JSON.parse(localStorage.getItem("todos"));
+    document.getElementById("modal").style.display = "";
+    document.getElementById("task_name_on_modal").innerHTML = `${obj[ind][0]}`
+
+
+    document.getElementsByClassName("modal_btn")[0].addEventListener("click", () => {
+        document.getElementById("modal").style.display = "none";
+        modal_yes(ind);
+
+    })
+
+
+    document.getElementsByClassName("modal_btn")[1].addEventListener("click", () => {
+        document.getElementById("modal").style.display = "none";
+        // modal_no(ind);
+
+    })
+
+}
+
+function modal_yes(ind) {
+    let obj = JSON.parse(localStorage.getItem("todos"));
+    let temp = obj[ind][1];
+
+    obj.splice(ind, 1);
+    localStorage.setItem("todos", JSON.stringify(obj));
+
+    load();
+
+
+    if (temp == '1') {
+
+        completed_task();
+
+    }
+}
+
+
+// ========================================================================================
+
+
+
+
+// ========================================Star Task=======================================
+
+
+function Star_task() {
+
+    
+}
+
+
+// ========================================================================================
+
+
+
+
+
+// ======================================Pending Task======================================
+function pending_task() {
+
+    let obj = JSON.parse(localStorage.getItem("todos"));
+
+    obj.forEach((ele, ind) => {
+        document.querySelectorAll(".todo")[ind].style.display = "none";
+
+        document.getElementById("pending_task").style.boxShadow = "0 0 7px 4px yellow";
+        document.getElementById("completed_task").style.boxShadow = "";
+
+        if (document.querySelectorAll(".todo p")[ind].style.textDecoration != "line-through") {
+
+
+            document.querySelectorAll(".todo")[ind].style.display = "";
+        }
+
+    })
+
+}
+
+// ========================================================================================
+
+
+
+
+// =====================================Completed Task=====================================
+function completed_task() {
+    let obj = JSON.parse(localStorage.getItem("todos"));
+
+    obj.forEach((ele, ind) => {
+
+        document.querySelectorAll(".todo")[ind].style.display = "none";
+
+        document.getElementById("pending_task").style.boxShadow = "";
+        document.getElementById("completed_task").style.boxShadow = "0 0 7px 4px yellow";
+
+        if (document.querySelectorAll(".todo p")[ind].style.textDecoration == "line-through") {
+
+            document.querySelectorAll(".todo")[ind].style.display = "";
+        }
+
+    })
+
+}
+// ========================================================================================
+
+
+// =======================================To-Do Edit=======================================
+
+function todo_edit_btn(ind) {
+    load();
+
+    let obj = JSON.parse(localStorage.getItem("todos"));
+
+    document.querySelectorAll(".todo_edit_btn")[ind].style.display = "none";
+    document.querySelectorAll(".todo_delete_btn")[ind].style.display = "none";
+
+    document.querySelectorAll(".todo")[ind].innerHTML += `
+        <i class="fas fa-save" onclick="edit_save(${ind})"></i>
+    
+    `
+
+    let temp = document.querySelectorAll(".todo p")[ind]
+
+    temp.innerHTML = `
+        <input type="text" class="edit_todo" maxlength="100" value = "${obj[ind][0]}" >
+        
+    
+    `
+
+}
+
+
+function edit_save(ind) {
+
+    let obj = JSON.parse(localStorage.getItem("todos"));
+
+    let val = document.querySelectorAll(".edit_todo")[0].value
+
+    let temp = obj[ind][1];
+
+    obj[ind][0] = val;
+
+    localStorage.setItem("todos", JSON.stringify(obj));
+
+    load();
+
+
+    if (temp == '1') {
+
+        completed_task();
+
+    }
+}
+
+// ========================================================================================
+
+
+
+
+
+
+
+
+
